@@ -1,5 +1,6 @@
 const core = require('@actions/core')
 const github = require('@actions/github') 
+const fs = require('fs')
 
 async function run() {
 	try {
@@ -30,21 +31,14 @@ async function run() {
 			body: comment.body,
 			line: comment.line
 		}))
-		const content = Buffer.from(JSON.stringify(comments)).toString('base64')
 
-		const storagePath = '.storage'
-		const storageFile = await octokit.request(`GET /repos/${repository.full_name}/contents/${storagePath}`)
-		const storage = {
-		  owner: repository.owner.login,
-		  repo: repository.name,
-		  path: storagePath,
-		  message: 'Add context for PR ' + pull_request.number,
-		  content
-		}
-
-		if(storageFile.status == '200') storage.sha = storageFile.data.sha		
-
-		octokit.repos.createOrUpdateFile(storage)
+		// in current implementation sbt generateSnapshot will look for the file named ReviewComments.json
+		const filePath = 'ReviewComments.json'
+		const fileContent = JSON.stringify(comments)
+		fs.writeFile(filePath, fileContent, (err) => {
+		  if(err) throw err
+		  console.log('The file has been saved!');
+		})
 
 	} catch (error) {
 	  core.setFailed(error.message)

@@ -4,7 +4,6 @@ const fs = require('fs')
 
 async function run() {
 	try {
-		console.log("err")
 		const {
 			context: {
 				payload: {
@@ -15,7 +14,9 @@ async function run() {
 		} = github
 
 
-		if(!pull_request || !pull_request.merged) return
+		if(!pull_request || !pull_request.merged) {
+			throw new Error('Action should be run on merged pull request event')
+		}
 
 		const commentsUrl = pull_request._links.review_comments.href
 		const commentsEndpoint = commentsUrl.replace('https://api.github.com', '')

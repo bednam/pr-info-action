@@ -3,9 +3,8 @@ const github = require('@actions/github')
 const fs = require('fs')
 
 async function run() {
-	console.log('before try')
 	try {
-		console.log('updated')
+		console.log("err")
 		const {
 			context: {
 				payload: {

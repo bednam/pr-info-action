@@ -24,7 +24,7 @@ async function run() {
 			previews: ["comfort-fade-preview", "everest-preview"]
 		})
 
-
+		console.log('updated')
 		const commentsRes = try {
 			await octokit.request(commentsUrl)
 		} catch(e) {

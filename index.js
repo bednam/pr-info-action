@@ -26,13 +26,7 @@ async function run() {
 			previews: ["comfort-fade-preview", "everest-preview"]
 		})
 
-		const commentsRes = try {
-			await octokit.request(commentsUrl)
-		} catch(e) {
-			console.log(e)	
-			return false
-		}
-		if(!commentsRes) return
+		const commentsRes = await octokit.request(commentsUrl)
 		
 		const comments = commentsRes.data.map(comment => ({
 			path: comment.path,
